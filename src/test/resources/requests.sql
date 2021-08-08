@@ -8,8 +8,8 @@ INSERT INTO cards (id, user_id, number, balance_in_kopecks)
 VALUES (1, 1, "5559000000000001", 1000000),
        (2, 1, "5559000000000002", 1000000);
 
-INSERT INTO card_transactions (source, target, amount_in_kopecks)
-VALUES ("5559000000000001", "5559000000000002", 10000);
+INSERT INTO card_transactions (id, source, target, amount_in_kopecks)
+VALUES (1, "5559000000000001", "5559000000000002", 10000);
 
 UPDATE cards
 SET balance_in_kopecks = balance_in_kopecks - 10000
