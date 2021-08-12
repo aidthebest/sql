@@ -40,7 +40,10 @@ public class LoginTest {
     @SneakyThrows
     public void verifyLogin2() {
         var runner = new QueryRunner();
-        var codeSQL = "SELECT (code) FROM auth_codes WHERE last_day(created);";
+        var codeSQL = "SELECT (code) FROM auth_codes ath, users us\n" +
+                "WHERE ath.user_id=us.id and us.login='vasya'\n" +
+                " and created=(select max(created) from auth_codes where\n" +
+                "     user_id=ath.user_id);";
         $("[name=login]").setValue("vasya");
         $("[name=password]").setValue("qwerty123");
         $("button").click();
