@@ -2,15 +2,15 @@ package ru.netology.login.test;
 
 import com.codeborne.selenide.Condition;
 import lombok.SneakyThrows;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
+import ru.netology.datahelper.DataHelper;
+import ru.netology.dbhelper.DdInfo;
+import ru.netology.page.LoginPage;
+import ru.netology.page.VerificationPage;
 
-import java.sql.DriverManager;
-
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 
 public class LoginTest {
@@ -21,39 +21,29 @@ public class LoginTest {
 
     @Test
     public void tripleLogin() {
-        $("[name=login]").setValue("vasya");
-        $("[name=password]").setValue("jkgg76");
-        $("[data-test-id=action-login]").click();
+
+
+        LoginPage lp = new LoginPage();
+        DdInfo dbInfo = new DdInfo();
+        lp.userLogin(DataHelper.getWrongPass());
         $("[class=notification__content]").shouldBe(Condition.visible).shouldHave(Condition.exactText("Ошибка! Неверно указан логин или пароль"));
-        $("[name=password]").doubleClick().sendKeys(Keys.SPACE);
-        $("[name=password]").setValue("dfgdg");
-        $("[data-test-id=action-login]").click();
+        lp.userLogin(DataHelper.getWrongPass());
         $("[class=notification__content]").shouldBe(Condition.visible).shouldHave(Condition.exactText("Ошибка! Неверно указан логин или пароль"));
-        $("[name=password]").doubleClick().sendKeys(Keys.SPACE);
-        $("[name=password]").setValue("sdvsss");
-        $("[data-test-id=action-login]").click();
+        lp.userLogin(DataHelper.getWrongPass());
         $("[class=notification__content]").shouldBe(Condition.visible).shouldHave(Condition.exactText("Система заблокирована, попробуйте позже"));
+        dbInfo.cleanDB();
     }
 
 
     @Test
     @SneakyThrows
     public void verifyLogin2() {
-        var runner = new QueryRunner();
-        var codeSQL = "SELECT (code) FROM auth_codes ath, users us\n" +
-                "WHERE ath.user_id=us.id and us.login='vasya'\n" +
-                " and created=(select max(created) from auth_codes where\n" +
-                "     user_id=ath.user_id);";
-        $("[name=login]").setValue("vasya");
-        $("[name=password]").setValue("qwerty123");
-        $("button").click();
-        var conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/app", "app", "pass"
-        );
-        String codeVer = runner.query(conn, codeSQL, new ScalarHandler<>());
-
-            $("[class=input__control]").setValue(codeVer);
-            $("[data-test-id=action-verify]").click();
-            $(".heading").shouldHave(Condition.exactText("  Личный кабинет"));
+        DdInfo dbInfo = new DdInfo();
+        LoginPage lp = new LoginPage();
+        lp.userLogin(DataHelper.getAuthInfo());
+        VerificationPage vp = new VerificationPage();
+        vp.verify(dbInfo.getCode());
+        $(".heading").shouldHave(Condition.exactText("  Личный кабинет"));
+        dbInfo.cleanDB();
         }
     }
