@@ -9,24 +9,36 @@ import java.sql.DriverManager;
 
 public class DdInfo {
 
+    public DdInfo() {
+
+    }
+
     @SneakyThrows
-    public Connection getConnection() {
+    public static Connection getConnection() {
         return DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/app", "app", "pass"
         );
     }
 
     @SneakyThrows
-    public void cleanDB() {
+    public static void cleanDB() {
         var conn = getConnection();
-        conn.prepareStatement("DROP TABLE IF EXISTS cards;");
-        conn.prepareStatement("DROP TABLE IF EXISTS users;");
-        conn.prepareStatement("DROP TABLE IF EXISTS auth_codes");
-        conn.prepareStatement("DROP TABLE IF EXISTS card_transactions");
+
+        conn.prepareStatement("Truncate table auth_codes");
+        conn.prepareStatement("Truncate table card_transactions");
+        conn.prepareStatement("Truncate table cards;");
+        conn.prepareStatement("Truncate table users;");
+
+
+
+//        conn.prepareStatement("DROP TABLE IF EXISTS cards;");
+//        conn.prepareStatement("DROP TABLE IF EXISTS users;");
+//        conn.prepareStatement("DROP TABLE IF EXISTS auth_codes");
+//        conn.prepareStatement("DROP TABLE IF EXISTS card_transactions");
     }
 
     @SneakyThrows
-    public String getCode () {
+    public static String getCode () {
         var runner = new QueryRunner();
         var conn = getConnection();
         var codeSQL = "SELECT (code) FROM auth_codes ath, users us\n" +

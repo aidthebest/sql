@@ -4,19 +4,20 @@ import lombok.Value;
 
 public class DataHelper {
 
-    public DataHelper() {
+    private DataHelper() {
     }
+
     @Value
-    public static class UserInfo {
-        String login;
-        String password;
+    public static class AuthInfo {
+        private String login;
+        private String password;
     }
 
-    public static UserInfo getAuthInfo() {
-        return new UserInfo("vasya", "qwerty123");
+    public static AuthInfo getAuthInfo() {
+        return new AuthInfo("vasya", "qwerty123");
     }
 
-    public static UserInfo getWrongPass() {
-        return new UserInfo("vasya", "dfg34gdfg4e");
+    public static AuthInfo getWrongAuthInfo() {
+        return new AuthInfo("vasya", "123qwerty");
     }
 }

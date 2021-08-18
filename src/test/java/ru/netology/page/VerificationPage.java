@@ -13,9 +13,9 @@ public class VerificationPage {
         codeField.shouldBe(visible);
     }
 
-    public void verify (String codeVer) {
+    public DashboardPage verify (String codeVer) {
         codeField.setValue(codeVer);
         button.click();
-//        return new VerificationPage();
+        return new DashboardPage();
     }
 }
