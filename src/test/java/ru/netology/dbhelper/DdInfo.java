@@ -23,12 +23,11 @@ public class DdInfo {
     @SneakyThrows
     public static void cleanDB() {
         var conn = getConnection();
-
-        conn.prepareStatement("Truncate table auth_codes");
-        conn.prepareStatement("Truncate table card_transactions");
-        conn.prepareStatement("Truncate table cards;");
-        conn.prepareStatement("Truncate table users;");
-
+        QueryRunner qr=new QueryRunner();
+        qr.execute(conn,"delete from auth_codes");
+        qr.execute(conn,"delete from card_transactions");
+        qr.execute(conn,"delete from cards");
+        qr.execute(conn,"delete from users");
 
 
 //        conn.prepareStatement("DROP TABLE IF EXISTS cards;");

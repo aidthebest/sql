@@ -1,6 +1,5 @@
 package ru.netology.login.test;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.datahelper.DataHelper;
@@ -16,10 +15,10 @@ public class LoginTest {
         open("http://localhost:9999");
     }
 
-    @AfterEach
-    public void clean() {
-        DdInfo.cleanDB();
-    };
+//    @AfterAll
+//    public static void clean() {
+//        DdInfo.cleanDB();
+//    };
 
     @Test
     public void tripleLogin() {
