@@ -28,12 +28,6 @@ public class DdInfo {
         qr.execute(conn,"delete from card_transactions");
         qr.execute(conn,"delete from cards");
         qr.execute(conn,"delete from users");
-
-
-//        conn.prepareStatement("DROP TABLE IF EXISTS cards;");
-//        conn.prepareStatement("DROP TABLE IF EXISTS users;");
-//        conn.prepareStatement("DROP TABLE IF EXISTS auth_codes");
-//        conn.prepareStatement("DROP TABLE IF EXISTS card_transactions");
     }
 
     @SneakyThrows
